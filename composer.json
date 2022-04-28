@@ -1,0 +1,21 @@
+{
+  "name": "mursalov/logger",
+  "description": "Hillel homework logger",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Mursalov\\Logger\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kenan Mursalov",
+      "email": "kenan.mursalov@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "psr/log": "^3.0"
+  }
+}
