@@ -14,7 +14,7 @@ class FileWriter implements WriterInterface
     {
         $this->Formatter = $Formatter;
         $this->fileName = $fileName;
-        $this->$filePath = $filePath;
+        $this->filePath = $filePath;
     }
     public function write($level, \Stringable|string $message, array $context = []): void
     {
