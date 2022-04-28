@@ -5,21 +5,31 @@ namespace Mursalov\Logger;
 class FileWriter implements WriterInterface
 {
     private string $fileName;
+    private string $filePath;
     private FormatterInterface $Formatter;
 
-    public function __construct(FormatterInterface $Formatter, string $fileName = __DIR__ . '/logs/log.txt')
+    public function __construct(FormatterInterface $Formatter, string $filePath = __DIR__ . '/logs/')
     {
         $this->Formatter = $Formatter;
-        $this->fileName = $fileName;
+        $this->fileName = 'log.txt';
+        $this->$filePath = $filePath;
     }
     public function write($level, \Stringable|string $message, array $context = []): void
     {
         $logLine = $this->Formatter->format($level, $message, $context);
-        file_put_contents($this->fileName, $logLine,  FILE_APPEND | LOCK_EX);
+        $filePath = $this->filePath;
+        !mkdir($filePath) && !is_dir($filePath);
+        $fileName = $this->fileName;
+        file_put_contents($filePath . $fileName, $logLine,  FILE_APPEND | LOCK_EX);
     }
     public function setFileName(string $fileName): void
     {
         $this->fileName = $fileName;
+    }
+
+    public function setFilePath(string $filePath): void
+    {
+        $this->filePath = $filePath;
     }
 
 
