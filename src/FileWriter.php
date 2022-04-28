@@ -18,7 +18,9 @@ class FileWriter implements WriterInterface
     {
         $logLine = $this->Formatter->format($level, $message, $context);
         $filePath = $this->filePath;
-        !mkdir($filePath) && !is_dir($filePath);
+        if (!mkdir($filePath) && !is_dir($filePath)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $filePath));
+        }
         $fileName = $this->fileName;
         file_put_contents($filePath . $fileName, $logLine,  FILE_APPEND | LOCK_EX);
     }
@@ -31,6 +33,4 @@ class FileWriter implements WriterInterface
     {
         $this->filePath = $filePath;
     }
-
-
 }
