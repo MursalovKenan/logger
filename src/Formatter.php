@@ -24,16 +24,20 @@ class Formatter implements FormatterInterface
         $logInfo = '';
         $formatParams = explode(' ', $this->format);
         foreach ($formatParams as $formatParam) {
-            if ($formatParam === self::LOG_DATE) {
-                $dateFormat = 'Y-m-d H:i:s';
-                $logDate = date($dateFormat);
-                $logInfo .= $logDate . ' ';
-            } elseif ($formatParam === self::LOG_LEVEL) {
-                $logInfo .= strtoupper($level) . ' ';
-            }elseif ($formatParam === self::LOG_MESSAGE) {
-                $logInfo .= $message . ' ';
-            }elseif ($formatParam === self::LOG_CONTEXT) {
-                $logInfo .= json_encode($context, JSON_THROW_ON_ERROR);
+            switch ($formatParam) {
+                case self::LOG_DATE :
+                    $dateFormat = 'Y-m-d H:i:s';
+                    $logDate = date($dateFormat);
+                    $logInfo .= $logDate . ' ';
+                    break;
+                case self::LOG_LEVEL :
+                    $logInfo .= strtoupper($level) . ' ';
+                    break;
+                case self::LOG_MESSAGE:
+                    $logInfo .= $message . ' ';
+                    break;
+                case self::LOG_CONTEXT:
+                    $logInfo .= serialize($context);
             }
         }
         $logInfo .=PHP_EOL;

@@ -7,10 +7,10 @@ class FileWriter implements WriterInterface
     private string $fileName;
     private FormatterInterface $Formatter;
 
-    public function __construct(FormatterInterface $Formatter)
+    public function __construct(FormatterInterface $Formatter, string $fileName = __DIR__ . '/logs/log.txt')
     {
         $this->Formatter = $Formatter;
-        $this->fileName = './log.txt';
+        $this->fileName = $fileName;
     }
     public function write($level, \Stringable|string $message, array $context = []): void
     {
