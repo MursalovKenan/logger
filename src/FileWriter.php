@@ -2,6 +2,9 @@
 
 namespace Mursalov\Logger;
 
+use Mursalov\Logger\interfaces\FormatterInterface;
+use Mursalov\Logger\interfaces\WriterInterface;
+
 class FileWriter implements WriterInterface
 {
     private string $fileName;
@@ -16,12 +19,15 @@ class FileWriter implements WriterInterface
         $this->fileName = $fileName;
         $this->filePath = $filePath;
     }
-    public function write($level, \Stringable|string $message, array $context = []): void
+
+    public function write($logDate, $level, \Stringable|string $message, array $context = []): void
     {
-        $logLine = $this->Formatter->format($level, $message, $context);
+        $logInfo = $this->Formatter->format($logDate, $level, $message, $context);
+        $logLine = implode(' | ', $logInfo);
+        $logLine .= PHP_EOL;
         $filePath = $this->filePath;
-        if (!mkdir($filePath) && !is_dir($filePath)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $filePath));
+        if (!file_exists($filePath)) {
+            mkdir($filePath);
         }
         $fileName = $this->fileName;
         file_put_contents($filePath . $fileName, $logLine,  FILE_APPEND | LOCK_EX);

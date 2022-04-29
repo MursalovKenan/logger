@@ -3,6 +3,8 @@
 namespace Mursalov\Logger;
 
 
+use DateTime;
+use Mursalov\Logger\interfaces\WriterInterface;
 use Psr\Log\AbstractLogger;
 
 class Logger extends AbstractLogger
@@ -18,8 +20,9 @@ class Logger extends AbstractLogger
 
     public function log($level, \Stringable|string $message, array $context = []): void
     {
+        $date = new DateTime();
         foreach ($this->writers as $writer) {
-            $writer->write($level, $message, $context);
+            $writer->write($date, $level, $message, $context);
         }
     }
 
