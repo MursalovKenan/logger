@@ -33,8 +33,13 @@ class DbWriter implements WriterInterface
     public function write($logDate, $level, \Stringable|string $message, array $context = []): void
     {
         $logInfo = $this->formatter->format($logDate, $level, $message, $context);
-        $query = 'INSERT INTO logs (log_date, log_level, log_message, log_context) 
-                    VALUE (:log_date, :log_level, :log_message, :log_context)';
+        $prep = [];
+        foreach($logInfo as $k => $v ) {
+            $prep[':'.$k] = $v;
+        }
+
+        $query = 'INSERT INTO logs ( ' . implode(', ',array_keys($logInfo)) . ')
+                    VALUES ( ' . implode(', ',array_keys($prep)) . ' );';
         $stmt = $this->dbh->prepare($query);
         $stmt->execute($logInfo);
     }

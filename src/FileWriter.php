@@ -26,8 +26,8 @@ class FileWriter implements WriterInterface
         $logLine = implode(' | ', $logInfo);
         $logLine .= PHP_EOL;
         $filePath = $this->filePath;
-        if (!file_exists($filePath)) {
-            mkdir($filePath);
+        if (!file_exists($filePath) && !mkdir($filePath) && !is_dir($filePath)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $filePath));
         }
         $fileName = $this->fileName;
         file_put_contents($filePath . $fileName, $logLine,  FILE_APPEND | LOCK_EX);
