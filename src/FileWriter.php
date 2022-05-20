@@ -5,6 +5,9 @@ namespace Mursalov\Logger;
 use Mursalov\Logger\interfaces\FormatterInterface;
 use Mursalov\Logger\interfaces\WriterInterface;
 
+/**
+ * Class which help write log to file
+ */
 class FileWriter implements WriterInterface
 {
     private string $fileName;
@@ -20,6 +23,14 @@ class FileWriter implements WriterInterface
         $this->filePath = $filePath;
     }
 
+    /**
+     * Write log into file.
+     * @param $logDate
+     * @param $level
+     * @param \Stringable|string $message
+     * @param array $context
+     * @return void
+     */
     public function write($logDate, $level, \Stringable|string $message, array $context = []): void
     {
         $logInfo = $this->Formatter->format($logDate, $level, $message, $context);

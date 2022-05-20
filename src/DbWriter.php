@@ -5,6 +5,9 @@ namespace Mursalov\Logger;
 use Mursalov\Logger\interfaces\FormatterInterface;
 use Mursalov\Logger\interfaces\WriterInterface;
 
+/**
+ * Class which help write log to database.
+ */
 class DbWriter implements WriterInterface
 {
     private FormatterInterface $formatter;
@@ -30,6 +33,14 @@ class DbWriter implements WriterInterface
         $dbh->exec($query);
     }
 
+    /**
+     * Write log into database.
+     * @param $logDate
+     * @param $level
+     * @param \Stringable|string $message
+     * @param array $context
+     * @return void
+     */
     public function write($logDate, $level, \Stringable|string $message, array $context = []): void
     {
         $logInfo = $this->formatter->format($logDate, $level, $message, $context);

@@ -5,6 +5,9 @@ namespace Mursalov\Logger;
 
 use Mursalov\Logger\interfaces\FormatterInterface;
 
+/**
+ * Format log data.
+ */
 class Formatter implements FormatterInterface
 {
     public const LOG_DATE = '{date}';
@@ -19,7 +22,13 @@ class Formatter implements FormatterInterface
     }
 
     /**
-     * @throws \JsonException
+     * Return array with formatter log data.
+     *
+     * @param $logDate
+     * @param $logLevel
+     * @param \Stringable|string $message
+     * @param array $context
+     * @return array
      */
     public function format($logDate, $logLevel, \Stringable|string $message, array $context = []): array
     {
@@ -44,21 +53,44 @@ class Formatter implements FormatterInterface
         return $logInfo;
     }
 
+    /**
+     * Format log date.
+     * @param $logDate
+     * @param $dateFormat
+     * @return string
+     */
     public function formatLogDate($logDate, $dateFormat = 'Y-m-d H:i:s'): string
     {
         return date($dateFormat);
     }
 
+    /**
+     * Format log level.
+     *
+     * @param $logLevel
+     * @return string
+     */
     public function formatLogLevel ($logLevel): string
     {
         return strtoupper($logLevel);
     }
 
+    /**
+     * Format log message
+     * @param $logMessage
+     * @return string
+     */
     public function formatLogMessage($logMessage): string
     {
         return trim($logMessage);
     }
 
+    /**
+     * Format log context
+     *
+     * @param $logContext
+     * @return string|null
+     */
     public function formatLogContext($logContext): ?string
     {
         if (is_array($logContext) && !empty($logContext)) {
